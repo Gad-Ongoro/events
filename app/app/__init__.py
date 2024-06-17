@@ -28,14 +28,7 @@ from routes.mpesa import mpesa_bp
 from routes.reset_password import email_reset_bp
 
 
-app = Flask(__name__)
-
-app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='./build',
-    template_folder='./build'
-)
+app = Flask(__name__,)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
@@ -68,16 +61,6 @@ app.register_blueprint(photo_bp)
 app.register_blueprint(mpesa_bp)
 app.register_blueprint(billing_details_bp)
 app.register_blueprint(email_reset_bp)
-
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("index.html")
-
-@app.route('/')
-@app.route('/<int:id>')
-def index(id=0):
-    return render_template("index.html")
-    # return 'WTF IS THIS'
 
 if __name__ == "__main__":
     app.run(debug=True, port=5555)

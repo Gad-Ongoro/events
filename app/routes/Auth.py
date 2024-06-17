@@ -88,13 +88,9 @@ class UserLogin(Resource):
     def post(self):
         data = login_args.parse_args()
         user = User.query.filter_by(email=data.email).first()
-        user_password_on_postgres_db = user.password
-        password_binary_string = bytes.fromhex(user_password_on_postgres_db[2:])
         if not user:
             return abort(404, detail="User does not exist")
-        # if not bcrypt.check_password_hash(user.password, data.password):
-        if not bcrypt.check_password_hash(password_binary_string, data.password):
-            print('error')
+        if not bcrypt.check_password_hash(user.password, data.password):
             return abort(403, detail="Wrong password")
 
         metadata = {'role': user.role}
