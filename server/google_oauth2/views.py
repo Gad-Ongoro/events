@@ -29,6 +29,7 @@ class ReactGoogleOAuthCredentialHandler(APIView):
             user, created = User.objects.get_or_create(email=user_email, defaults={
                 'first_name': user_name.split()[0],
                 'last_name': user_name.split()[1] if len(user_name.split()) > 1 else '',
+                'email': user_email,
                 'is_google_user': True,
                 'is_verified': True,
             })
