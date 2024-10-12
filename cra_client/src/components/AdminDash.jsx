@@ -35,7 +35,7 @@ const Admin = () => {
               </a>
               <ul className={activeMenu === "event" ? "active" : ""}>
                 <li className="block w-full py-2 hover:border-indigo-600 hover:text-gray-900 duration-150">
-                  <Link to={"/event"}>View Events</Link>
+                  <Link to={"/events"}>View Events</Link>
                 </li>
                 <li className="block w-full py-2 hover:border-indigo-600 hover:text-gray-900 duration-150">
                   <Link to={"/new_Event"}>Add a New Event</Link>

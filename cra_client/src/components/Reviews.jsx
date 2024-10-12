@@ -118,7 +118,7 @@ function Reviews() {
   //         </Routes>
   //         <div>
   //           <p className="text-white d-inline">{review.comment}</p>
-  //           <NavLink to={`/event/${eventId}/reviews/edit`} exact>
+  //           <NavLink to={`/events/${eventId}/reviews/edit`} exact>
   //             <img
   //               src="https://cdn-icons-png.flaticon.com/128/860/860814.png"
   //               alt="NA"

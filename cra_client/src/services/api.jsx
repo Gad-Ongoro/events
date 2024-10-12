@@ -1,87 +1,76 @@
-// import axios from 'axios';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import dayjs from 'dayjs';
 
-// const BASE_URL = 'https://event-project.onrender.com/api';
+const baseURL = process.env.REACT_APP_API_URL;
+// const baseURL = `http://127.0.0.1:8000/api/`;
+// const baseURL = `https://945b-105-163-157-23.ngrok-free.app/api/`;
 
-// const api = axios.create({
-//   baseURL: BASE_URL,
-// });
+let accessToken = localStorage.getItem('access') || '';
+let refreshToken = localStorage.getItem('refresh') || '';
 
-// export const fetchUsers = () => api.get('/users');
-// export const fetchUser = (userId) => api.get(`/user/${userId}`);
+const api = axios.create({
+    baseURL: baseURL,
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken ? `Bearer ${accessToken}` : '',
+    },
+});
 
-// export const fetchEvents = () => api.get('/events');
+api.interceptors.request.use(
+    async (req) => {
+        if (!accessToken) {
+            accessToken = localStorage.getItem('access') || '';
+            refreshToken = localStorage.getItem('refresh') || '';
+        }
 
-// export const fetchEvent = (eventId) => {
-//   return api.get(`${BASE_URL}/events/${eventId}`)
-//     .then(response => {
-//       if (!response.status !== 200) {
-//         throw new Error('Network response was not ok');
-//       }
-//       return response.data;
-//     })
-//     .catch(error => {
-//       throw error.response.data;
-//     });
-// };
+        if (accessToken) {
+            const user = jwtDecode(accessToken);
+            const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
 
-// export const fetchPricing = () => api.get('/pricing_list');
-// export const fetchBookings = () => api.get('/bookings');
+            if (!isExpired) {
+                req.headers.Authorization = `Bearer ${accessToken}`;
+                return req;
+            }
 
-// export const fetchAuthorizations = () => api.get('/authorizations');
+            try {
+                const response = await axios.post(`${baseURL}token/refresh/`, {
+                    refresh: refreshToken,
+                });
 
-// export const fetchBilling = () => api.get('/billing_info');
+                accessToken = response.data.access;
+                localStorage.setItem('access', accessToken);
+                req.headers.Authorization = `Bearer ${accessToken}`;
+            } catch (error) {
+                console.error('Token refresh failed:', error);
+                try {
+                    axios.post(`${baseURL}logout/`, {
+                        refresh: refreshToken,
+                    }).then(
+                        (res) => {
+                            console.log(res);
+                        },
+                        (err) => {
+                            console.log(err);
+                        }
+                    );
+                    
+                } catch (error) {
+                    console.error('Logout failed:', error);
+                }
+                localStorage.removeItem('access');
+                localStorage.removeItem('refresh');
+                localStorage.clear();
+                window.location.href = '/account/signin';
+                return Promise.reject(error);
+            }
+        }
 
-// export const fetchBillingDetails = () => api.get('/billing_details');
+        return req;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
-// export const registerUser = async (userData) => {
-//   try {
-//     const response = await api.post('/register', userData);
-//     return response.data;
-//   } catch (error) {
-//     throw error.response.data;
-//   }
-// };
-// export const addEvent = async (eventData) => {
-//   try {
-//     const response = await api.post('/new_event', eventData);
-//     return response.data;
-//   } catch (error) {
-//     throw error.response.data;
-//   }
-// };
-
-// export const login = async (email, password) => {
-//   try {
-//       const response = await axios.post(`${BASE_URL}/login`, { email, password });
-//       const data = response.data;
-//       localStorage.setItem('accessToken', data.access_token);
-//       localStorage.setItem('refreshToken', data.refresh_token);
-//       return data;
-//   } catch (error) {
-//       console.error('Error logging in:', error);
-//       throw error;
-//   }
-// };
-
-// const isTokenExpired = (token) => {
-//   const expiry = token.exp * 1000;
-//   return Date.now() >= expiry;
-// };
-
-// export const getAllUsers = async () => {
-//   try {
-//     const response = await api.get('/users');
-//     return response.data;
-//   } catch (error) {
-//     throw error.response.data;
-//   }
-// };
-// export const getAllEvents = async () => {
-//     try {
-//       const response = await api.get('/events');
-//       return response.data;
-//     } catch (error) {
-//       throw error.response.data;
-//     }
-//   };
-// export default api;
+export default api;

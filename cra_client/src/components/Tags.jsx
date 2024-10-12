@@ -85,7 +85,7 @@ function Tags() {
 				<div key={tag.id}>
 					<div>
 						<p className='text-white d-inline'>{tag.name}</p>
-						<NavLink to={`/event/${eventId}/tags/edit`} exact>
+						<NavLink to={`/events/${eventId}/tags/edit`} exact>
 							<img src="https://cdn-icons-png.flaticon.com/128/860/860814.png" alt="NA" width={25} />
 						</NavLink>
 						<button className='delete-btn border-0' onClick={() => handleTagDelete(tag.id)}>
