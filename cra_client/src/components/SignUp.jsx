@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { NavLink, useNavigate, Link } from "react-router-dom";
+import GoogleSigninButton from "./Auth/GoogleSignInButton";
 import PropTypes from "prop-types";
 import "../App.css";
 
@@ -149,6 +150,9 @@ function SignUp({ onBackToLogin }) {
           <button className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
             Sign Up
           </button>
+
+          <p className='text-center'>OR</p>
+          <GoogleSigninButton></GoogleSigninButton>
 
           <Link
             to={"/signin"}

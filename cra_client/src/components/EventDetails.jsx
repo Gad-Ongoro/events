@@ -6,15 +6,17 @@ import Reviews from "./Reviews";
 import Tags from "./Tags";
 import ReviewSection from "./Reviews";
 import "../App.css";
-import Footer from "./footer";
+import Footer from "./Footer";
+import { useAppContext } from "../services/utils";
 import { EventsContext } from "../App";
 
 function EventDetails() {
   let navigate = useNavigate()
   const { eventId } = useParams();
-  const [event, setEvent] = useState(null);
+  const [ event, setEvent ] = useState(null);
   const [interestCount, setInterestCount] = useState(0);
   const [showBubble, setShowBubble] = useState(false);
+  const { events, getEventDetails } = useAppContext();
   let { role } = useContext(EventsContext);
   const [ticketQuantities, setTicketQuantities] = useState({
     regular: 0,
@@ -29,20 +31,14 @@ function EventDetails() {
     })
     .then((response) => response.json())
     .then(() => {
-        navigate('/event')
+        navigate('/events')
       }
     )
   }
 
   useEffect(() => {
-    fetch(`https://event-project.onrender.com/events/${eventId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setEvent(data);
-        console.log(data);
-      }
-      )
-      .catch((error) => console.error("Error fetching data:", error));
+    let selectedEvent = events.find((event) => event.id === eventId);
+    setEvent(selectedEvent);
   }, [eventId]);
 
   const handleInterestClick = () => {
@@ -85,26 +81,26 @@ function EventDetails() {
                 <img
                   className="w-72 h-72"
                   src={event.photo.url}
-                  alt={`Image of ${event.event.name}`}
+                  alt={`Image of ${event.name}`}
                 />
               </div>
               <div>
                 <div className="mt-4 text-gray-900">
                   <h2 className="font-bold text-2xl mb-2">
-                    {event.event.name}
+                    {event.name}
                   </h2>
-                  <p className="font-medium mb-1">Venue: {event.event.venue}</p>
+                  <p className="font-medium mb-1">Venue: {event.venue}</p>
                   <p className="font-medium mb-1">
-                    Description: {event.event.description}
+                    Description: {event.description}
                   </p>
                   <p className="font-medium mb-1">
-                    Duration: {event.event.duration}
+                    Duration: {event.duration}
                   </p>
                   <p className="font-medium mb-1">
-                    Start Time: {event.event.start_time}
+                    Start Time: {event.start_time}
                   </p>
                   <p className="font-medium mb-1">
-                    Start Date: {event.event.start_date}
+                    Start Date: {event.start_date}
                   </p>
 
                   <p className="font-medium mb-1">
@@ -279,7 +275,7 @@ function EventDetails() {
             <div className="comments">
               <div className="rev-section">
                 <h4>
-                  <NavLink to={`/event/${eventId}/reviews`} exact>
+                  <NavLink to={`/events/${eventId}/reviews`} exact>
                     <h3 className="text-2xl font-bold">Event Reviews</h3>
                   </NavLink>{" "}
                 </h4>
@@ -298,7 +294,7 @@ function EventDetails() {
               </div>
               <div className="tag-section">
                 <h4>
-                  <NavLink to={`/event/${eventId}/tags`} exact>
+                  <NavLink to={`/events/${eventId}/tags`} exact>
                     {" "}
                     <p className="text-xl font-medium">Tags</p>{" "}
                   </NavLink>{" "}

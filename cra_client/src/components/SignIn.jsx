@@ -2,6 +2,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate, NavLink, Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import PropTypes from "prop-types";
+import GoogleSigninButton from "./Auth/GoogleSignInButton";
 import { EventsContext } from "../App";
 
 export default function SignIn({ onSwitchToSignUp }) {
@@ -127,6 +128,9 @@ export default function SignIn({ onSwitchToSignUp }) {
           >
             Sign In
           </button>
+
+          <p className='text-center'>OR</p>
+          <GoogleSigninButton></GoogleSigninButton>
 
           <div className="text-center">
             <NavLink className={'text-primary'} to={'/password_reset'}>

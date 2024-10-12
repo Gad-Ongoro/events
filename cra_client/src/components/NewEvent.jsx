@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { addEvent } from '../services/api';
 
 function NewEvent() {
-  const [eventDetails, setEventDetails] = useState({
+  const [ eventDetails, setEventDetails ] = useState({
     name: '',
     description: '',
     start_date: '',
@@ -35,15 +34,7 @@ function NewEvent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.target.reset();
-  
-    try {
-      const response = await addEvent(eventDetails);
-      console.log('Event created successfully:', response.data); 
-    } catch (error) {
-      console.error('Error creating event:', error.response.data);
-    }
   };
-  
 
   return (
     <form className='event-form' onSubmit={handleSubmit}>
