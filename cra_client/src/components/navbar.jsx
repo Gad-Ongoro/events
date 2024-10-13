@@ -1,23 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { EventsContext } from "../App";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAppContext } from "../services/utils";
 
-function Navbar() {
-  let { token_exists, handleLogOutTokenBlock, signedIn, role } =
-    useContext(EventsContext);
-  
-  let dash_url;
-  if (role === 100){
-    dash_url = '/user_dashboard'
-  }
-  else if (role === 101){
-    dash_url = '/organizer_dashboard'
-  }
-  else if (role === 111){
-    dash_url = '/admin_dashboard'
-  }
+function NavBar() {
+  const { auth, handleLogout, userId } = useAppContext();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -29,9 +17,9 @@ function Navbar() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <h2 className="-m-1.5 p-1.5 text-2xl font-extrabold text-indigo-600">
+            <NavLink to="/home" className="-m-1.5 p-1.5 text-2xl font-extrabold text-indigo-600">
               Ticket Nexus
-            </h2>
+            </NavLink>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -45,17 +33,17 @@ function Navbar() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             <Link to="/home">Home</Link>
-            <Link to="/event">Events</Link>
-            {token_exists && <Link to={dash_url}>Dashboard</Link>}
+            <Link to="/events">Events</Link>
+            {auth && <Link to={`/dashboard/${userId}/dashview`}>Dashboard</Link>}
 
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {token_exists || signedIn ? (
+            {auth ? (
               <NavLink
                 to="/signin"
                 className="log_link p-1 px-4 border border-primary rounded-pill"
                 exact = "true"
-                onClick={handleLogOutTokenBlock}
+                onClick={handleLogout}
               >
                 Logout
               </NavLink>
@@ -104,17 +92,17 @@ function Navbar() {
                   </Link>
                 </div>
                 <div className="py-6">
-                  <Link className="log_link p-1 px-2 border border-primary rounded-pill" to="/event">
+                  <Link className="log_link p-1 px-2 border border-primary rounded-pill" to="/events">
                     Events
                   </Link>
                 </div>
                 <div className="py-6">
-                  {token_exists || signedIn ? (
+                  {auth ? (
                     <NavLink
                       to="/signin"
                       className="log_link p-1 px-2 border border-primary rounded-pill"
                       exact = "true"
-                      onClick={handleLogOutTokenBlock}
+                      onClick={handleLogout}
                     >
                       Logout
                     </NavLink>
@@ -137,4 +125,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;

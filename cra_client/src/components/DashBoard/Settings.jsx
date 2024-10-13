@@ -48,7 +48,7 @@ function Settings() {
 					<hr className='mt-3' />
 
 					<div className='text-right'>
-						<button className='text-white text-lg font-bold bg-green-500 hover:bg-green-600 h-10 w-36 mt-2 rounded-lg'>Save</button>
+						<button className='text-white text-lg font-bold bg-blue-500 hover:bg-blue-600 h-10 w-36 mt-2 rounded-lg'>Save</button>
 					</div>
 				</div>
 
@@ -94,7 +94,7 @@ function Settings() {
 
 					<hr className='mt-3' />
 					<div className='text-right'>
-						<button className='text-white text-lg font-bold bg-green-500 hover:bg-green-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
+						<button className='text-white text-lg font-bold bg-blue-500 hover:bg-blue-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
 					</div>
 				</div>
 
@@ -120,7 +120,7 @@ function Settings() {
 
 					<hr className='mt-3' />
 					<div className='text-right'>
-						<button className='text-white text-lg font-bold bg-green-500 hover:bg-green-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
+						<button className='text-white text-lg font-bold bg-blue-500 hover:bg-blue-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
 					</div>
 				</div>
 
@@ -141,7 +141,7 @@ function Settings() {
 
 					<hr className='mt-3' />
 					<div className='text-right'>
-						<button className='text-white text-lg font-bold bg-green-500 hover:bg-green-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
+						<button className='text-white text-lg font-bold bg-blue-500 hover:bg-blue-600 h-10 w-36 mt-2 rounded-lg'>Update</button>
 					</div>
 
 				</div>

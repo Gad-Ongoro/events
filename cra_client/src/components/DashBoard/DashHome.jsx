@@ -14,7 +14,7 @@ import { useAppContext } from '../../services/utils';
 export const DashContext = createContext();
 
 function DashHome() {
-	const { handleLogout } = useAppContext();
+	const { handleLogout, userId } = useAppContext();
 	const [dashDrawerOpen, setDashDrawerOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
 
@@ -39,25 +39,23 @@ function DashHome() {
 				<AnimatedYPage>
 					<DashContext.Provider value={{ dashDrawerOpen, setDashDrawerOpen, handleLogout }}>
 						<DashDrawer></DashDrawer>
-						<div className='container h-screen grid grid-cols-12'>
-							<div className={`sticky top-0 z-20 ${isScrolled ? 'bg-emerald-100' : 'bg-white'} 
+						<div className='container grid grid-cols-12'>
+							<div className={`sticky top-0 z-20 ${isScrolled ? 'bg-blue-100' : 'bg-white'} 
 								transition-all duration-300
 								col-start-1 col-end-13 sm:col-start-2 sm:col-end-13 sm:p-3 rounded-lg`}
 							>
 								<DashBar></DashBar>
 							</div>
-							<div className='sticky top-20 sm:top-10 rounded col-start-1 col-end-13 
-								row-start-1 row-end-2 md:fixed md:top-1/2 md:-translate-y-1/2 md:row-start-2 md:row-end-13
-								hidden md:block'
+							<div className='rounded col-start-1 col-end-2 md:sticky md:top-0 hidden md:flex'
 							>
 								<SideNav></SideNav>
 							</div>
 							<div className='row-start-2 row-end-13 col-start-1 md:col-start-2 col-end-13'>
 								<Routes>
-									<Route path='/dashview' element={<DashView></DashView>}></Route>
-									<Route path='/settings' element={<Settings></Settings>}></Route>
-									<Route path='/ads' element={<Ads></Ads>}></Route>
-									<Route path='/lipa-na-mpesa' element={<MpesaPayment></MpesaPayment>}></Route>
+									<Route path={`/${userId}/dashview`} element={<DashView></DashView>}></Route>
+									<Route path={`/${userId}/settings`} element={<Settings></Settings>}></Route>
+									<Route path={`/${userId}/ads`} element={<Ads></Ads>}></Route>
+									<Route path={`/${userId}/lipa-na-mpesa`} element={<MpesaPayment></MpesaPayment>}></Route>
 								</Routes>
 							</div>
 						</div>

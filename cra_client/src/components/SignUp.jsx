@@ -2,59 +2,33 @@ import { useState, useRef } from "react";
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import GoogleSigninButton from "./Auth/GoogleSignInButton";
 import PropTypes from "prop-types";
+import NavBar from "./NavBar";
+import AnimatedXPage from "./Animations/AnimatedXPage";
+import { useAppContext } from "../services/utils";
 import "../App.css";
 
 function SignUp({ onBackToLogin }) {
-  const navigate = useNavigate();
+  const { userRegister } = useAppContext();
   let [showPassword, setShowPassword] = useState(false);
   let [showConfirmPassword, setShowConfirmPassword] = useState(false);
   let [signUpData, setSignUpData] = useState({});
 
-  let email_label = useRef();
   let password_label = useRef();
   let password_input = useRef();
   let confirmPasswordInput = useRef();
-  let confirmPasswordLabel = useRef();
 
   function onInputChange(e) {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(signUpData);
 
     setSignUpData((current) => ({ ...current, [name]: value }));
   }
 
+  // handle submit
   function onLogFormSubmit(e) {
     e.preventDefault();
     e.target.reset();
-
-    fetch("https://event-project.onrender.com/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signUpData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          navigate("/signin");
-        }
-      })
-      .then((data) => {
-        if (data) {
-          navigate("/signin");
-        } else {
-          navigate("/signin");
-        }
-      });
-  }
-
-  function onInputClick() {
-    email_label.current.style.cssText = `transform: translate(-10%, -140%) scale(0.9); background-color: rgb(20, 0, 100); color: white; border-radius: 1000px;`;
-    password_label.current.style.cssText = `transform: translate(-10%, -140%) scale(0.9); background-color: rgb(20, 0, 100); color: white; border-radius: 1000px;`;
-    confirmPasswordLabel.current.style.cssText = `transform: translate(-10%, -140%) scale(0.9); background-color: rgb(20, 0, 100); color: white; border-radius: 1000px;`;
+    userRegister(signUpData);
   }
 
   function toggle_show_password() {
@@ -76,6 +50,9 @@ function SignUp({ onBackToLogin }) {
   }
 
   return (
+    <>
+    <NavBar></NavBar>
+    <AnimatedXPage>
     <div className="flex items-center justify-center h-screen">
       <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
         <form onSubmit={onLogFormSubmit} className="space-y-5">
@@ -137,16 +114,7 @@ function SignUp({ onBackToLogin }) {
               className="w-full mt-2 px-3 py-2 text-dark bg-transparent outline-none border shadow-sm rounded-lg"
             />
           </div>
-          <select
-            className="w-full text-sm px-3 py-2.5 bg-transparent outline-none border rounded-lg h-full shadow-sm"
-            name="role"
-            onChange={onInputChange}
-          >
-            <option>What's your role</option>
-            <option value={100}>Attendee</option>
-            <option value={101}>Organizer</option>
-            <option value={111}>Administrator</option>
-          </select>
+
           <button className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
             Sign Up
           </button>
@@ -181,6 +149,8 @@ function SignUp({ onBackToLogin }) {
         </form>
       </div>
     </div>
+    </AnimatedXPage>
+    </>
   );
 }
 

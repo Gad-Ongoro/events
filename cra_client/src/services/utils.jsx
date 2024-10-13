@@ -29,6 +29,22 @@ export default function AppContext({ children }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // User Registration
+  const userRegister = async (data) => {
+    try {
+      setLoading(true);
+      const response = await api.post('user/register/', data);
+      if (response.status === 201) {
+        enqueueSnackbar('Registration successful', { variant: 'success' });
+        navigate('/signin');
+      }
+    } catch (error) {
+      enqueueSnackbar('Registration failed', { variant: 'error' });
+    }  finally {
+      setLoading(false);
+    }
+  };
+
   // Google Login
   const googleLogin = async (credential) => {
     try {
@@ -40,7 +56,7 @@ export default function AppContext({ children }) {
         localStorage.setItem('refresh', response.data.refresh);
         setAuth(true);
         enqueueSnackbar(`Successfully logged in`, { variant: 'success' });
-        navigate(`/`);
+        navigate(`/dashboard/${userId}/dashview`);
       } else {
         throw new Error("Error logging in");
       }
@@ -49,6 +65,36 @@ export default function AppContext({ children }) {
       return error;
     } finally {
       setLoading(false);
+    }
+  };
+
+  // handle login
+  const handleLogin = (inputs, recaptchaValue) => {
+    if (!recaptchaValue) {
+      enqueueSnackbar('Please complete the ReCAPTCHA', { variant: 'error' });
+      return;
+    }
+    try {
+      setLoading(true);
+      api.post('token/', { ...inputs, recaptcha: recaptchaValue })
+      .then((res) => {
+        if(res.status === 200){
+          const user_id = jwtDecode(res.data.access).user_id;
+          localStorage.setItem('access', res.data.access);
+          localStorage.setItem('refresh', res.data.refresh);
+          setAuth(true);
+          enqueueSnackbar(`Successfully logged in`, { variant: 'success' });
+          navigate(`/dashboard/${user_id}/dashview`);
+        };
+      })
+      .catch((err) => {
+        console.log(err)
+        enqueueSnackbar(`${err.response.data.detail}`, { variant: 'error' });
+      });
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(`${err.message}`, { variant: 'error' });
+      enqueueSnackbar(`${err.response.data.detail}`, { variant: 'error' });
     }
   };
 
@@ -61,10 +107,11 @@ export default function AppContext({ children }) {
 
     try {
       const res = await api.post('logout/', { 'refresh_token': refreshToken });
-      if (res.status === 204) {
+      if (res.status === 205) {
         setAuth(false);
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
+        localStorage.clear();
         navigate('/signin');
 				enqueueSnackbar(`Successfully Logged Out!`, { variant: 'success' });
       }
@@ -87,6 +134,7 @@ export default function AppContext({ children }) {
     }
   };
 
+  // auth check
   useEffect(() => {
     if (accessToken) {
       setAuth(true);
@@ -152,22 +200,9 @@ export default function AppContext({ children }) {
   }, []);
 
   const contextValues = {
-    googleLogin,
-    handleLogout,
-    events,
-    getEventDetails,
-    cartItems,
-    setCartItems,
-    cartItemsCount,
-    cartSubTotal,
-    user,
-    setUser,
-    userId,
-    auth,
-    setAuth,
-    fetchUser,
-    scrollToTop,
-    navigate
+    userRegister, googleLogin, handleLogin, handleLogout, events, getEventDetails,
+    cartItems, setCartItems, cartItemsCount, cartSubTotal, user, setUser, userId,
+    auth, setAuth, fetchUser, scrollToTop, navigate
   };
 
   return (

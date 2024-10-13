@@ -1,43 +1,24 @@
-import { useState, useRef, useContext, useEffect } from "react";
-import { useNavigate, NavLink, Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { NavLink, Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import PropTypes from "prop-types";
 import GoogleSigninButton from "./Auth/GoogleSignInButton";
-import { EventsContext } from "../App";
+import NavBar from "./NavBar";
+import AnimatedXPage from "./Animations/AnimatedXPage";
+import { useAppContext } from "../services/utils";
 
 export default function SignIn({ onSwitchToSignUp }) {
-  const navigate = useNavigate();
-  let { setSignedIn } = useContext(EventsContext);
+  const { handleLogin } = useAppContext();
   let [showPassword, setShowPassword] = useState(false);
   let [signInData, setSignInData] = useState({});
   let [recaptchaCheck, setRecaptchaCheck] = useState(false);
+  const [ recaptchaValue, setRecaptchaValue ] = useState(null);
 
-  let email_label = useRef();
-  let password_label = useRef();
   let password_input = useRef();
-  let logSubmit = useRef();
 
-  function onRecaptchaCheck(){
-		setRecaptchaCheck(current => !current)
-	}
-
-  function handleLogSubmitBtn(){
-		if (!recaptchaCheck) {
-			logSubmit.current.style.cssText = `transform: scale(0.9); cursor: no-drop;`;
-		}
-		else{
-			logSubmit.current.style.cssText = `transform: scale(1.1); cursor: pointer;`;
-		}
-	}
-
-  useEffect(() => {
-		setTimeout(()=> handleLogSubmitBtn(), 500)
-	});
-
-  // function onInputClick() {
-  //   email_label.current.style.cssText = `transform: translate(-10%, -140%) scale(0.9); background-color: rgb(20, 0, 100); color: white; border-radius: 1000px;`;
-  //   password_label.current.style.cssText = `transform: translate(-10%, -140%) scale(0.9); background-color: rgb(20, 0, 100); color: white; border-radius: 1000px;`;
-  // }
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+  };
 
   function onInputChange(e) {
     let name = e.target.name;
@@ -46,39 +27,10 @@ export default function SignIn({ onSwitchToSignUp }) {
     setSignInData((current) => ({ ...current, [name]: value }));
   }
 
-  function onLogFormSubmit(e) {
+  // handle login
+  async function onLogFormSubmit(e) {
     e.preventDefault();
-
-    fetch("https://event-project.onrender.com/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signInData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          window.alert("No users found!");
-        }
-      })
-      .then((data) => {
-        if (data) {
-          localStorage.setItem("user_auth_token", data.token);
-          if (data.role === 100) {
-            navigate("/user_dashboard");
-          }
-          else if (data.role === 101) {
-            navigate("/organizer_dashboard");
-          }
-          else if (data.role === 111){
-            navigate("/admin_dashboard");
-          }
-          setSignedIn(true);
-          console.log(data);
-        }
-      });
+    handleLogin(signInData, recaptchaValue);
   }
 
   function toggle_show_password() {
@@ -91,6 +43,9 @@ export default function SignIn({ onSwitchToSignUp }) {
   }
 
   return (
+    <>
+    <NavBar></NavBar>
+    <AnimatedXPage>
     <div className="flex items-center justify-center h-screen">
       <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
         <form onSubmit={onLogFormSubmit} className="space-y-5">
@@ -118,12 +73,10 @@ export default function SignIn({ onSwitchToSignUp }) {
             />
           </div>
           <div className="d-flex justify-content-center align-items-center">
-            <ReCAPTCHA className='recaptcha mt-4 m-2' sitekey="6LdeE1MpAAAAAEfpO0m3ZVvfjnAVGJU4-Nr0HpSq" onChange={onRecaptchaCheck}/>
+            <ReCAPTCHA className='recaptcha mt-4 m-2' sitekey="6LdeE1MpAAAAAEfpO0m3ZVvfjnAVGJU4-Nr0HpSq" onChange={handleRecaptchaChange}/>
           </div>
           <button
-            ref={logSubmit}
             onClick={onLogFormSubmit}
-            disabled={!recaptchaCheck}
             className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
           >
             Sign In
@@ -165,6 +118,8 @@ export default function SignIn({ onSwitchToSignUp }) {
         </form>
       </div>
     </div>
+    </AnimatedXPage>
+    </>
   );
 }
 

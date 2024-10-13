@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, NavLink, Link, Routes, Route, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -6,8 +6,8 @@ import Reviews from "./Reviews";
 import Tags from "./Tags";
 import ReviewSection from "./Reviews";
 import "../App.css";
-import Footer from "./footer";
-import { EventsContext } from "../App";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function EventDetails() {
   let navigate = useNavigate()
@@ -15,7 +15,6 @@ function EventDetails() {
   const [event, setEvent] = useState(null);
   const [interestCount, setInterestCount] = useState(0);
   const [showBubble, setShowBubble] = useState(false);
-  let { role } = useContext(EventsContext);
   const [ticketQuantities, setTicketQuantities] = useState({
     regular: 0,
     vip: 0,
@@ -29,7 +28,7 @@ function EventDetails() {
     })
     .then((response) => response.json())
     .then(() => {
-        navigate('/event')
+        navigate('/events')
       }
     )
   }
@@ -77,6 +76,7 @@ function EventDetails() {
 
   return (
     <>
+      <NavBar></NavBar>
       <div className="mt-32 mb-40 mx-auto max-w-screen-xl pb-4 px-4 items-center lg:flex md:px-8">
         {event && (
           <div className="">
@@ -115,7 +115,7 @@ function EventDetails() {
                       color="rgb(135, 107, 43)"
                       onClick={handleInterestClick}
                     />
-                    {role === 111 && <button className="text-danger" onClick={deleteEvent}>Remove Event</button>}
+                    { <button className="text-danger" onClick={deleteEvent}>Remove Event</button>}
                   </p>
                   {showBubble && (
                     <div className="bubble">Interest declared!</div>
@@ -279,7 +279,7 @@ function EventDetails() {
             <div className="comments">
               <div className="rev-section">
                 <h4>
-                  <NavLink to={`/event/${eventId}/reviews`} exact>
+                  <NavLink to={`/events/${eventId}/reviews`} exact>
                     <h3 className="text-2xl font-bold">Event Reviews</h3>
                   </NavLink>{" "}
                 </h4>
@@ -298,7 +298,7 @@ function EventDetails() {
               </div>
               <div className="tag-section">
                 <h4>
-                  <NavLink to={`/event/${eventId}/tags`} exact>
+                  <NavLink to={`/events/${eventId}/tags`} exact>
                     {" "}
                     <p className="text-xl font-medium">Tags</p>{" "}
                   </NavLink>{" "}

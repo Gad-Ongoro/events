@@ -30,32 +30,27 @@ function DashView() {
 				)}
 				<div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
 					<div className='flex justify-center'>
-						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' src="https://i.pinimg.com/474x/85/12/05/8512057135f1b2c8bf2a0d64bd50873b.jpg" alt="NA" width={200} />
+						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' 
+							src="https://i.pinimg.com/474x/06/30/e6/0630e63a37d7ef817f4705d1627bd89d.jpg" 
+							alt="NA" 
+							width={200} 
+						/>
 					</div>
 					<div className='flex justify-center'>
-						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' src="https://i.pinimg.com/474x/d3/24/34/d3243406515221f17b30f8101e370d3f.jpg" alt="NA" width={200} />
+						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' 
+							src="https://i.pinimg.com/474x/5f/16/50/5f16506b67a0c0b2481529687f1f8b85.jpg" 
+							alt="NA" 
+							width={200} 
+						/>
 					</div>
 					<div className='flex justify-center'>
-						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' src="https://i.pinimg.com/474x/56/0e/fa/560efa36c00b3f25ec8fab0fd58a13a9.jpg" alt="NA" width={200} />
+						<img className='rounded h-52 object-cover cursor-pointer transition-all duration-300 hover:scale-105' 
+							src="https://i.pinimg.com/474x/a3/6a/7f/a36a7f4b38c104f9833750f839b5eccc.jpg" 
+							alt="NA" 
+							width={200} 
+						/>
 					</div>
 				</div>
-			</div>
-			<div>
-				<div className='flex flex-col align-center rounded bg-gray-300 my-5 text-center overflow-auto'>
-					<h2 className='text-gray-900 text-lg font-bold'>Changes Chart</h2>
-					<BarChart
-						series={[
-							{ data: [3, 4, 1, 6, 5], stack: 'A', label: 'Series A1' },
-							{ data: [4, 3, 1, 5, 8], stack: 'A', label: 'Series A2' },
-							{ data: [4, 2, 5, 4, 1], stack: 'B', label: 'Series B1' },
-							{ data: [2, 8, 1, 3, 1], stack: 'B', label: 'Series B2' },
-							{ data: [10, 6, 5, 8, 9], label: 'Series C1' },
-						]}
-						width={600}
-						height={350}
-					/>
-				</div>
-
 			</div>
 		</div>
 

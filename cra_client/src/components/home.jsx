@@ -3,7 +3,9 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import "../App.css";
 import { Link } from "react-router-dom";
-import Footer from "./footer";
+import AnimatedXPage from "./Animations/AnimatedXPage";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function Home() {
   const [events, setEvents] = useState([]);
@@ -46,7 +48,7 @@ function Home() {
   }, []);
 
   let event_cards = events.map((event) => (
-    <Link key={event.id} to={`/event/${event.id}`}>
+    <Link key={event.id} to={`/events/${event.id}`}>
       <div className="">
         <div className="">
           <img
@@ -68,6 +70,8 @@ function Home() {
 
   return (
     <>
+      <NavBar></NavBar>
+      <AnimatedXPage>
       <section className="mt-32 mb-40 mx-auto max-w-screen-xl pb-4 px-4 items-center">
         <div className="space-y-4 flex-1 sm:text-center lg:text-left">
           <h1 className="text-gray-800 font-bold text-4xl xl:text-5xl">
@@ -80,7 +84,7 @@ function Home() {
           </p>
           <div>
             <div className="mt-12 space-y-3 sm:space-x-6 sm:space-y-0 sm:flex">
-              <Link to={"/event"}>
+              <Link to={"/events"}>
                 <button
                   className="px-28 py-3.5 w-full bg-indigo-600 hover:bg-indigo-500 border-none text-white text-center rounded-md shadow-md block sm:w-auto"
                   type="button"
@@ -115,6 +119,7 @@ function Home() {
 
         
       </section>
+      </AnimatedXPage>
       <Footer />
     </>
   );

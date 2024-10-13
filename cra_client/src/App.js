@@ -7,7 +7,6 @@ import Event from "./components/Event.jsx";
 import EventDetails from "./components/EventDetails.jsx";
 import AdminDashboard from "./components/minad.jsx";
 import Dashboard from "./components/AdminDash.jsx";
-import Navbar from "./components/NavBar.jsx";
 import Booking from "./components/booking.jsx";
 import TicketHistory from "./components/TicketHistory";
 import EventHistory from "./components/EventHistory";
@@ -21,10 +20,8 @@ import Reviews from "./components/Reviews.jsx";
 import AdminDashBrd from "./components/AdminDash";
 import OrganizerDashBoard from "./components/OrganizerDash/OrganizerDashBoard.jsx";
 import PassReset from "./components/PasswordReset/PassReset.jsx";
-import User from "./components/DashBoards/userDashboard";
 import DashHome from "./components/DashBoard/DashHome.jsx";
 import "./App.css";
-import { jwtDecode } from "jwt-decode";
 import AppContext from "./services/utils.jsx";
 export const EventsContext = createContext();
 
@@ -33,7 +30,6 @@ function App() {
 	return (
 		<AppContext>
 			<div id="home">
-			<Navbar />
 				<Routes>
 					<Route path="/" element={<Event></Event>}></Route>
 					<Route path='/signup' element={<SignUp></SignUp>}></Route>
@@ -56,7 +52,7 @@ function App() {
 					<Route path="/booked" element={<Reviews />} />				
 					<Route path="/admin_dashboard/*" element={<AdminDashBrd></AdminDashBrd>} exact></Route>
 					<Route path="/organizer_dashboard/*" element={<OrganizerDashBoard></OrganizerDashBoard>} exact></Route>
-					<Route path="/dashboard/*" element={<DashHome />} />
+					<Route path={`/dashboard/*`} element={<DashHome />} />
 				</Routes>
 			</div>
 		</AppContext>
