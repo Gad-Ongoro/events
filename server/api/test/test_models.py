@@ -12,13 +12,11 @@ class UserModelTest(TestCase):
             password='AnonPassword123!',
             first_name='Anon',
             last_name='User',
-            role=100
         )
     
     def test_user_creation(self):
         self.assertEqual(self.user.email, 'anonuser@gmail.com')
         self.assertTrue(self.user.check_password('AnonPassword123!'))
-        self.assertEqual(self.user.role, 100)
         self.assertEqual(self.user.name, 'Anon User')
     
     def test_create_superuser(self):
@@ -48,7 +46,6 @@ class EventModelTest(TestCase):
             password='OrgPass123!',
             first_name='Event',
             last_name='Organiser',
-            role=1000
         )
 
         # event

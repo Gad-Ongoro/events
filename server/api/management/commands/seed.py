@@ -24,8 +24,9 @@ class Command(BaseCommand):
         # Create users
         for i in range(10):
             user = User.objects.create(
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
                 email=fake.email(),
-                role=rc([100, 101, 111]),
             )
             user.set_password(fake.password())
             user.save()
