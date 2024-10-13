@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     # user
     path('users/', views.UserListApiView.as_view(), name='user-list'),
-    path('users/register/', views.UserCreateApiView.as_view(), name='user-create'), # for normal signups
+    path('user/register/', views.UserCreateApiView.as_view(), name='user-create'), # for normal signups
     path('users/<uuid:pk>/', views.UserDetailApiView.as_view(), name='user-detail'),
     
     # profile
@@ -18,4 +18,7 @@ urlpatterns = [
     # photos
     path('photos/', views.PhotoListCreateView.as_view(), name='photo-list-create'),
     path('photos/<uuid:pk>', views.PhotoDetailView.as_view(), name='photo-detail'),
+    
+    # logout
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 ]

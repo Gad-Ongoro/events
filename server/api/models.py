@@ -27,11 +27,6 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     username = None
-    ROLE_CHOICES = (
-        (100, 'Event Goer'),
-        (1000, 'Event Organizer'),
-    )
-    role = models.IntegerField(choices=ROLE_CHOICES, default=100)
     is_google_user = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
