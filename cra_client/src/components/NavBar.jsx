@@ -1,12 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { EventsContext } from "../App";
 import { Dialog } from "@headlessui/react";
-import { useAppContext } from "../services/utils";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAppContext } from "../services/utils";
 
-function Navbar() {
-  const { auth, userId } = useAppContext();
+function NavBar() {
+  const { auth, handleLogout, userId } = useAppContext();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -14,7 +13,7 @@ function Navbar() {
     <>
       <header className="">
         <nav
-          className="flex items-center justify-between p-4 lg:px-6"
+          className="flex items-center justify-between p-6 lg:px-8"
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
@@ -35,7 +34,7 @@ function Navbar() {
           <div className="hidden lg:flex lg:gap-x-12">
             <Link to="/home">Home</Link>
             <Link to="/events">Events</Link>
-            {auth && <NavLink to={`/dashboard/${userId}`}>Dashboard</NavLink>}
+            {auth && <Link to={`/dashboard/${userId}/dashview`}>Dashboard</Link>}
 
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -44,7 +43,7 @@ function Navbar() {
                 to="/signin"
                 className="log_link p-1 px-4 border border-primary rounded-pill"
                 exact = "true"
-                // onClick={handleLogOutTokenBlock}
+                onClick={handleLogout}
               >
                 Logout
               </NavLink>
@@ -103,7 +102,7 @@ function Navbar() {
                       to="/signin"
                       className="log_link p-1 px-2 border border-primary rounded-pill"
                       exact = "true"
-                      // onClick={handleLogOutTokenBlock}
+                      onClick={handleLogout}
                     >
                       Logout
                     </NavLink>
@@ -126,4 +125,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;
