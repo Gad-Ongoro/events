@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../services/utils";
 import NavBar from "./NavBar";
 import AnimatedXPage from "./Animations/AnimatedXPage";
 import Footer from "./Footer";
 import "../App.css";
 
 function Event() {
-  const [events, setEvents] = useState([]);
+  const { events } = useAppContext();
 
   let spinners = (<div className='text-center p-4 m-4'>
 		<div className='spinner-border text-primary mx-2'></div>
@@ -16,13 +17,6 @@ function Event() {
 		<div className='spinner-border text-primary mx-2'></div>
 		<div className='spinner-grow text-primary mx-2'></div>
 	</div>);
-
-  useEffect(() => {
-    fetch("https://event-project.onrender.com/events")
-      .then((r) => r.json())
-      .then((events) => setEvents(events))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
 
   return (
     <>

@@ -8,7 +8,6 @@ import ReviewSection from "./Reviews";
 import "../App.css";
 import Footer from "./Footer";
 import { useAppContext } from "../services/utils";
-import { EventsContext } from "../App";
 
 function EventDetails() {
   let navigate = useNavigate()
@@ -17,7 +16,6 @@ function EventDetails() {
   const [interestCount, setInterestCount] = useState(0);
   const [showBubble, setShowBubble] = useState(false);
   const { events, getEventDetails } = useAppContext();
-  let { role } = useContext(EventsContext);
   const [ticketQuantities, setTicketQuantities] = useState({
     regular: 0,
     vip: 0,
@@ -111,7 +109,6 @@ function EventDetails() {
                       color="rgb(135, 107, 43)"
                       onClick={handleInterestClick}
                     />
-                    {role === 111 && <button className="text-danger" onClick={deleteEvent}>Remove Event</button>}
                   </p>
                   {showBubble && (
                     <div className="bubble">Interest declared!</div>

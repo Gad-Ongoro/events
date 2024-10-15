@@ -56,7 +56,7 @@ export default function AppContext({ children }) {
         localStorage.setItem('refresh', response.data.refresh);
         setAuth(true);
         enqueueSnackbar(`Successfully logged in`, { variant: 'success' });
-        navigate(`/dashboard/${userId}/dashview`);
+        navigate(`/dashboard/${user_id}/dashview`);
       } else {
         throw new Error("Error logging in");
       }

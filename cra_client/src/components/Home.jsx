@@ -2,6 +2,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import "../App.css";
 import { Link } from "react-router-dom";
+import NavBar from './NavBar';
 import Footer from "./Footer";
 import { useAppContext } from "../services/utils";
 
@@ -59,6 +60,7 @@ function Home() {
 
   return (
     <>
+      <NavBar />
       <div className="mt-16 mb-40 mx-auto items-center">
         {/* <section className="w-full bg-cover bg-center h-96" style={{ backgroundImage: "url('/path-to-hero-image.jpg')" }}>
           <div 
